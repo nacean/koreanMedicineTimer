@@ -1,4 +1,4 @@
-import { Button, Paper } from "@mui/material";
+import { Button, Paper, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 
 import BedInfo from "@src/bed/BedInfo";
@@ -90,6 +90,12 @@ const Bed = () => {
         therapyList={therapyList}
         handleTherapyComplete={handleTherapyComplete}
       />
+      <TextField
+        id="outlined-multiline-static"
+        label="치료 부위 메모"
+        multiline
+        rows={3}
+      />
       <div css={styles.timeModifyButtonContainer}>
         <Button
           variant="contained"
@@ -118,14 +124,17 @@ const Bed = () => {
 const styles = createStyles({
   container: {
     width: 320,
-    height: 500,
+    height: 560,
     paddingTop: 4,
     paddingBottom: 2,
     paddingInline: 2,
 
     display: "flex",
     flexDirection: "column",
-    gap: 4,
+    gap: 8,
+  },
+  memoContainer: {
+    marginBlock: 4,
   },
   timeModifyButtonContainer: {
     marginTop: "auto",
