@@ -9,22 +9,39 @@ import { getBasicTherapyList } from "@src/utils/therapyUtils";
 import TherapyType from "@src/types/TherapyType";
 
 const Bed = () => {
-  const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
   const [therapyList, setTherapyList] = useState<TherapyType[]>(
     getBasicTherapyList()
   );
-  const [nowTherapy, setNowTherapy] = useState<TherapyType | null>(null);
+  const [pickedTherapyIndex, setPickedTherapyIndex] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
+    if (pickedTherapyIndex === null) {
+      return;
+    }
+
     let intervalId = 0;
 
-    if (isRunning && time >= 1) {
+    const nowRemainTime = therapyList[pickedTherapyIndex].remainTime;
+
+    if (isRunning && therapyList[pickedTherapyIndex].remainTime >= 1) {
+      const updatedTherapyList = therapyList.map((therapy, index) => {
+        if (pickedTherapyIndex === index) {
+          return {
+            ...therapy,
+            remainTime: therapy.remainTime - 1,
+          };
+        }
+        return therapy;
+      });
+
       intervalId = setInterval(() => {
-        setTime((prevTime) => prevTime - 1);
+        setTherapyList(updatedTherapyList);
       }, 1000);
-    } else if (time === 0) {
+    } else if (nowRemainTime === 0) {
       setIsRunning(false);
       clearInterval(intervalId);
     } else {
@@ -33,31 +50,78 @@ const Bed = () => {
     }
 
     return () => {
-      if (time < 1) {
+      if (nowRemainTime <= 0) {
         setIsRunning(false);
       }
       clearInterval(intervalId);
     };
-  }, [isRunning, time]);
+  }, [isRunning, pickedTherapyIndex, therapyList]);
 
   const handleStart = () => {
+    if (pickedTherapyIndex === null) {
+      return;
+    }
+
     setIsRunning(true);
   };
 
   const handlePause = () => {
+    if (pickedTherapyIndex === null) {
+      return;
+    }
+
     setIsRunning(false);
   };
 
   const handleReset = () => {
-    setTime(0);
+    if (pickedTherapyIndex === null) {
+      return;
+    }
+
+    const updatedTherapyList = therapyList.map((therapy, index) => {
+      if (pickedTherapyIndex === index) {
+        return {
+          ...therapy,
+          remainTime: therapy.duration,
+        };
+      }
+      return therapy;
+    });
+
+    setTherapyList(updatedTherapyList);
   };
 
   const handleTimerUpDown = (num: number) => {
-    if (time + num < 0) {
-      setTime(0);
-    } else {
-      setTime(time + num);
+    if (pickedTherapyIndex === null) {
+      return;
     }
+
+    const nowRemainTime = therapyList[pickedTherapyIndex].remainTime;
+    let updatedTherapyList: TherapyType[] = [];
+
+    if (nowRemainTime + num < 0) {
+      updatedTherapyList = therapyList.map((therapy, index) => {
+        if (pickedTherapyIndex === index) {
+          return {
+            ...therapy,
+            remainTime: 0,
+          };
+        }
+        return therapy;
+      });
+    } else {
+      updatedTherapyList = therapyList.map((therapy, index) => {
+        if (pickedTherapyIndex === index) {
+          return {
+            ...therapy,
+            remainTime: therapy.remainTime + num,
+          };
+        }
+        return therapy;
+      });
+    }
+
+    setTherapyList(updatedTherapyList);
   };
 
   const handleTherapyComplete = (
@@ -78,17 +142,27 @@ const Bed = () => {
     );
   };
 
+  const pickTherapyIndex = (index: number) => {
+    setPickedTherapyIndex(index);
+  };
+
   return (
     <Paper elevation={2} css={styles.container}>
       <BedInfo />
       <Timer
         isRunning={isRunning}
-        time={time}
+        time={
+          pickedTherapyIndex !== null
+            ? therapyList[pickedTherapyIndex].remainTime
+            : null
+        }
         handleTimerUpDown={handleTimerUpDown}
       />
       <TherapyList
         therapyList={therapyList}
         handleTherapyComplete={handleTherapyComplete}
+        pickedTherapyIndex={pickedTherapyIndex}
+        pickTherapyIndex={pickTherapyIndex}
       />
       <TextField
         id="outlined-multiline-static"
@@ -101,7 +175,10 @@ const Bed = () => {
           variant="contained"
           color={isRunning ? "inherit" : "primary"}
           onClick={isRunning ? handlePause : handleStart}
-          disabled={time < 1}
+          disabled={
+            pickedTherapyIndex === null ||
+            therapyList[pickedTherapyIndex].remainTime <= 0
+          }
           size="large"
           css={{ flex: 1 }}
         >
@@ -113,6 +190,7 @@ const Bed = () => {
           onClick={handleReset}
           size="large"
           css={{ flex: 1 }}
+          disabled={pickedTherapyIndex === null}
         >
           초기화
         </Button>

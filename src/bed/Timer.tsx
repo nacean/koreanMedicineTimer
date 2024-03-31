@@ -5,7 +5,7 @@ import { FC } from "react";
 
 interface Props {
   isRunning: boolean;
-  time: number;
+  time: number | null;
   handleTimerUpDown: (num: number) => void;
 }
 
@@ -13,7 +13,7 @@ const Timer: FC<Props> = ({ isRunning, time, handleTimerUpDown }) => {
   return (
     <div css={styles.clockContainer}>
       <div css={styles.clock} style={{ color: isRunning ? "red" : "black" }}>
-        {getClockFromNumber(time)}
+        {time && getClockFromNumber(time)}
       </div>
       <div css={styles.clockButtonContainer}>
         <Button
@@ -56,6 +56,7 @@ const styles = createStyles({
   },
   clock: {
     width: 180,
+    height: 46,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

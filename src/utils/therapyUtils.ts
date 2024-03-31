@@ -5,25 +5,25 @@ export const getBasicTherapyList = (): TherapyType[] => {
     {
       name: "핫팩",
       duration: 600,
-      elapsedTime: 0,
+      remainTime: 600,
       isComplete: false,
     },
     {
       name: "ICT",
       duration: 600,
-      elapsedTime: 0,
+      remainTime: 600,
       isComplete: false,
     },
     {
       name: "부항",
       duration: 180,
-      elapsedTime: 0,
+      remainTime: 180,
       isComplete: false,
     },
     {
       name: "침",
       duration: 900,
-      elapsedTime: 0,
+      remainTime: 900,
       isComplete: false,
     },
   ];

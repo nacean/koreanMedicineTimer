@@ -18,9 +18,16 @@ interface Props {
     event: React.ChangeEvent<HTMLInputElement>,
     handleIndex: number
   ) => void;
+  pickedTherapyIndex: number | null;
+  pickTherapyIndex: (pickIndex: number) => void;
 }
 
-const TherapyList: FC<Props> = ({ therapyList, handleTherapyComplete }) => {
+const TherapyList: FC<Props> = ({
+  therapyList,
+  handleTherapyComplete,
+  pickedTherapyIndex,
+  pickTherapyIndex,
+}) => {
   return (
     <TableContainer css={{ border: "1px solid #9e9e9e" }}>
       <Table aria-label="simple table">
@@ -41,7 +48,20 @@ const TherapyList: FC<Props> = ({ therapyList, handleTherapyComplete }) => {
         </TableHead>
         <TableBody>
           {therapyList.map((row, index) => (
-            <TableRow hover key={row.name}>
+            <TableRow
+              hover
+              onClick={() => {
+                pickTherapyIndex(index);
+              }}
+              key={row.name}
+              style={{
+                outline:
+                  index === pickedTherapyIndex
+                    ? "3px solid #2196f3"
+                    : undefined,
+                outlineOffset: -3,
+              }}
+            >
               <TableCell
                 align="center"
                 css={{
@@ -58,7 +78,7 @@ const TherapyList: FC<Props> = ({ therapyList, handleTherapyComplete }) => {
                 {getTherapyTime(row.duration)}
               </TableCell>
               <TableCell align="right">
-                {getTherapyTime(row.duration - row.elapsedTime)}
+                {getTherapyTime(row.remainTime)}
               </TableCell>
               <TableCell align="right">
                 <Checkbox
