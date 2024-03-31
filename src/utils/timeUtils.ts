@@ -13,3 +13,9 @@ export const getClockFromNumber = (num: number) => {
 
   return minuteString + ":" + secondString;
 };
+
+export const getTherapyTime = (num: number) => {
+  const minute = Math.floor(num / 60);
+
+  return minute;
+};
