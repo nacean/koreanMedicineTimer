@@ -10,10 +10,26 @@ interface Props {
 }
 
 const Timer: FC<Props> = ({ isRunning, time, handleTimerUpDown }) => {
+  const getTherapyState = () => {
+    if (time !== null) {
+      if (time === 0) {
+        return "완료";
+      } else {
+        if (isRunning) {
+          return "치료중";
+        } else {
+          return "대기중";
+        }
+      }
+    }
+
+    return null;
+  };
+
   return (
     <div css={styles.clockContainer}>
       <div css={styles.clock} style={{ color: isRunning ? "red" : "black" }}>
-        {time && getClockFromNumber(time)}
+        {time !== null && getClockFromNumber(time)}
       </div>
       <div css={styles.clockButtonContainer}>
         <Button
@@ -42,7 +58,7 @@ const Timer: FC<Props> = ({ isRunning, time, handleTimerUpDown }) => {
         css={styles.timeStateContainer}
         style={{ color: isRunning ? "red" : "black" }}
       >
-        {isRunning ? "치료중" : "대기중"}
+        {getTherapyState()}
       </div>
     </div>
   );

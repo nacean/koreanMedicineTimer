@@ -33,6 +33,7 @@ const Bed = () => {
           return {
             ...therapy,
             remainTime: therapy.remainTime - 1,
+            isComplete: therapy.remainTime - 1 === 0, //시간이 다 흐르면 자동 완료
           };
         }
         return therapy;
@@ -202,7 +203,7 @@ const Bed = () => {
 const styles = createStyles({
   container: {
     width: 320,
-    height: 560,
+    height: 570,
     paddingTop: 4,
     paddingBottom: 2,
     paddingInline: 2,
