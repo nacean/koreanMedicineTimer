@@ -1,7 +1,18 @@
-import { Alert, AlertTitle, Button } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Button,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import { FC } from "react";
+
 import TherapyType from "@src/types/TherapyType";
 import { createStyles } from "@src/utils/utils";
-import { FC } from "react";
 
 interface Props {
   pickedTherapyIndex: number | null;
@@ -23,11 +34,41 @@ const TherapyFinishAlert: FC<Props> = ({
   return (
     <Alert sx={styles.container} color="success" onClose={handleCloseAlert}>
       <AlertTitle>치료 완료 알림</AlertTitle>
-      <div>{`${therapyList[pickedTherapyIndex].name} 완료`}</div>
-      <div>
-        {therapyList.length - 1 > pickedTherapyIndex &&
-          `다음 치료 : ${therapyList[pickedTherapyIndex + 1].name}`}
-      </div>
+      <List css={styles.list}>
+        <ListItem disablePadding>
+          <ListItemIcon>
+            <CheckCircleIcon sx={styles.listIcon} />
+          </ListItemIcon>
+          <ListItemText>
+            <div css={styles.listTextContainer}>
+              <div>완료: </div>
+              <div css={styles.doneTherapyText}>
+                {therapyList[pickedTherapyIndex].name}
+              </div>
+            </div>
+          </ListItemText>
+        </ListItem>
+        {
+          <ListItem disablePadding>
+            <ListItemIcon>
+              <ArrowCircleRightIcon sx={styles.listIcon} />
+            </ListItemIcon>
+            <ListItemText>
+              <div css={styles.listTextContainer}>
+                <div>다음: </div>
+                {pickedTherapyIndex &&
+                therapyList.length - 1 > pickedTherapyIndex ? (
+                  <div css={styles.nextTherapyText}>
+                    {therapyList[pickedTherapyIndex + 1].name}
+                  </div>
+                ) : (
+                  <div css={{ color: "#bdbdbd" }}>없음</div>
+                )}
+              </div>
+            </ListItemText>
+          </ListItem>
+        }
+      </List>
       <div css={styles.buttonContainer}>
         <Button
           size="large"
@@ -67,6 +108,29 @@ const styles = createStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: 24,
+    paddingBlock: 24,
+  },
+  listIcon: {
+    fontSize: 40,
+    color: "#000",
+  },
+  listTextContainer: {
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+    fontSize: 30,
+  },
+  doneTherapyText: {
+    color: "red",
+  },
+  nextTherapyText: {
+    color: "blue",
   },
 });
 

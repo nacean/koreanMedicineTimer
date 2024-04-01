@@ -48,7 +48,7 @@ const Bed = () => {
 
       intervalId = setInterval(() => {
         setTherapyList(updatedTherapyList);
-      }, 100);
+      }, 1000);
     } else if (nowRemainTime === 0) {
       setIsRunning(false);
       clearInterval(intervalId);
