@@ -10,6 +10,20 @@ interface Props {
 }
 
 const Timer: FC<Props> = ({ isRunning, time, handleTimerUpDown }) => {
+  const getBackgroundByTime = () => {
+    if (time === null) {
+      return undefined;
+    }
+    if (time === 0) {
+      return "red";
+    }
+    if (time <= 60) {
+      return "yellow";
+    }
+
+    return undefined;
+  };
+
   const getTherapyState = () => {
     if (time !== null) {
       if (time === 0) {
@@ -28,7 +42,13 @@ const Timer: FC<Props> = ({ isRunning, time, handleTimerUpDown }) => {
 
   return (
     <div css={styles.clockContainer}>
-      <div css={styles.clock} style={{ color: isRunning ? "red" : "black" }}>
+      <div
+        css={styles.clock}
+        style={{
+          color: isRunning ? "red" : "black",
+          backgroundColor: getBackgroundByTime(),
+        }}
+      >
         {time !== null && getClockFromNumber(time)}
       </div>
       <div css={styles.clockButtonContainer}>
@@ -56,7 +76,10 @@ const Timer: FC<Props> = ({ isRunning, time, handleTimerUpDown }) => {
       </div>
       <div
         css={styles.timeStateContainer}
-        style={{ color: isRunning ? "red" : "black" }}
+        style={{
+          color: isRunning ? "red" : "black",
+          backgroundColor: getBackgroundByTime(),
+        }}
       >
         {getTherapyState()}
       </div>
@@ -90,6 +113,7 @@ const styles = createStyles({
     gap: 2,
   },
   clockAdjustButton: {
+    backgroundColor: "#fff",
     minWidth: 0,
     width: 30,
     height: 30,

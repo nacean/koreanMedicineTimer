@@ -144,6 +144,7 @@ const Bed = () => {
   };
 
   const pickTherapyIndex = (index: number) => {
+    setIsRunning(false);
     setPickedTherapyIndex(index);
   };
 
