@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import TherapyType from "@src/types/TherapyType";
 import { createStyles } from "@src/utils/utils";
@@ -27,12 +27,32 @@ const TherapyFinishAlert: FC<Props> = ({
   autoStartNextTherapy,
   handleCloseAlert,
 }) => {
+  const [colorIndex, setColorIndex] = useState<number>(0);
+
+  const colorArray: ("success" | "error")[] = ["success", "error"];
+
+  useEffect(() => {
+    let intervalId = 0;
+
+    intervalId = setInterval(() => {
+      setColorIndex(colorIndex === 0 ? 1 : 0);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [colorIndex]);
+
   if (pickedTherapyIndex === null) {
     return null;
   }
 
   return (
-    <Alert sx={styles.container} color="success" onClose={handleCloseAlert}>
+    <Alert
+      sx={styles.container}
+      color={colorArray[colorIndex]}
+      onClose={handleCloseAlert}
+    >
       <AlertTitle>치료 완료 알림</AlertTitle>
       <List css={styles.list}>
         <ListItem disablePadding>
