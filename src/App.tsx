@@ -1,25 +1,21 @@
-import Bed from "@src/bed/Bed";
-import { createStyles } from "@src/utils/utils";
 import { Reset } from "styled-reset";
+
+import RoomList from "@src/room/RoomList";
+import { createStyles } from "@src/utils/utils";
 
 function App() {
   return (
     <div css={styles.container}>
       <Reset />
-      <Bed />
-      <Bed />
-      <Bed />
-      <Bed />
+      <RoomList />
     </div>
   );
 }
 
 const styles = createStyles({
   container: {
-    padding: 24,
     display: "flex",
-    flexWrap: "wrap",
-    gap: 12,
+    justifyContent: "center",
   },
 });
 
