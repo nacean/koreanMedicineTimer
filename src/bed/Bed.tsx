@@ -1,5 +1,5 @@
 import { Button, Paper, TextField } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 
 import BedInfo from "@src/bed/BedInfo";
 import { createStyles } from "@src/utils/utils";
@@ -8,8 +8,15 @@ import TherapyList from "@src/bed/therapy/TherapyList";
 import { getBasicTherapyList } from "@src/utils/therapyUtils";
 import TherapyType from "@src/types/TherapyType";
 import TherapyFinishAlert from "@src/bed/therapy/TherapyFinishAlert";
+import { enqueueSnackbar } from "notistack";
 
-const Bed = () => {
+interface Props {
+  roomNum: number;
+}
+
+const Bed: FC<Props> = ({ roomNum }) => {
+  const [bedName, setBedName] = useState<string>("침대");
+
   const [isRunning, setIsRunning] = useState(false); // 타이머가 작동 하는가
   const [openDoneAlert, setOpenDoneAlert] = useState(false); // 타이머가 자동으로 끝난 것인가 (alert 띄워주기 위함)
 
@@ -36,6 +43,15 @@ const Bed = () => {
           if (updatedRemainTime === 0) {
             //TODO : 1초 남기고 종료됨. 조금 수정하기
             setOpenDoneAlert(true);
+
+            enqueueSnackbar(
+              `치료실${roomNum} - 침대1: [${therapyList[pickedTherapyIndex].name}]이 끝났습니다.`,
+              {
+                anchorOrigin: { horizontal: "right", vertical: "bottom" },
+                variant: "success",
+                autoHideDuration: 10000,
+              }
+            );
           }
           return {
             ...therapy,
@@ -48,7 +64,7 @@ const Bed = () => {
 
       intervalId = setInterval(() => {
         setTherapyList(updatedTherapyList);
-      }, 1000);
+      }, 100);
     } else if (nowRemainTime === 0) {
       setIsRunning(false);
       clearInterval(intervalId);
@@ -63,7 +79,7 @@ const Bed = () => {
       }
       clearInterval(intervalId);
     };
-  }, [isRunning, pickedTherapyIndex, therapyList]);
+  }, [isRunning, pickedTherapyIndex, roomNum, therapyList]);
 
   const handleStart = () => {
     if (pickedTherapyIndex === null) {
@@ -171,9 +187,15 @@ const Bed = () => {
     setOpenDoneAlert(false);
   };
 
+  const handleBedName = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setBedName(e.target.value);
+  };
+
   return (
     <Paper elevation={2} css={styles.container}>
-      <BedInfo />
+      <BedInfo bedName={bedName} handleBedName={handleBedName} />
 
       <Timer
         isRunning={isRunning}

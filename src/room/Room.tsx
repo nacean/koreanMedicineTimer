@@ -8,6 +8,8 @@ interface Props {
 }
 
 const Room: FC<Props> = ({ nowRoomNum, thisRoomNum }) => {
+  const roomNumArray = [1, 2, 3, 4, 5, 6];
+
   return (
     <div
       role="roomPanel"
@@ -16,12 +18,9 @@ const Room: FC<Props> = ({ nowRoomNum, thisRoomNum }) => {
       aria-labelledby={`room-tab-${thisRoomNum}`}
       css={styles.container}
     >
-      <Bed />
-      <Bed />
-      <Bed />
-      <Bed />
-      <Bed />
-      <Bed />
+      {roomNumArray.map((roomNum) => (
+        <Bed roomNum={roomNum} />
+      ))}
     </div>
   );
 };

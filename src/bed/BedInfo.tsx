@@ -1,11 +1,24 @@
 import { TextField } from "@mui/material";
 
 import { createStyles } from "@src/utils/utils";
+import { FC } from "react";
 
-const BedInfo = () => {
+interface Props {
+  bedName: string;
+  handleBedName: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+}
+
+const BedInfo: FC<Props> = ({ bedName, handleBedName }) => {
   return (
     <div css={styles.infoContainer}>
-      <TextField label="배드명" size="small" />
+      <TextField
+        label="배드명"
+        size="small"
+        value={bedName}
+        onChange={handleBedName}
+      />
       <TextField label="환자정보" size="small" />
     </div>
   );
