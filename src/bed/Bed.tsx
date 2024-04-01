@@ -7,9 +7,11 @@ import Timer from "@src/bed/Timer";
 import TherapyList from "@src/bed/therapy/TherapyList";
 import { getBasicTherapyList } from "@src/utils/therapyUtils";
 import TherapyType from "@src/types/TherapyType";
+import TherapyFinishAlert from "@src/bed/therapy/TherapyFinishAlert";
 
 const Bed = () => {
-  const [isRunning, setIsRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(false); // 타이머가 작동 하는가
+  const [openDoneAlert, setOpenDoneAlert] = useState(false); // 타이머가 자동으로 끝난 것인가 (alert 띄워주기 위함)
 
   const [therapyList, setTherapyList] = useState<TherapyType[]>(
     getBasicTherapyList()
@@ -30,10 +32,15 @@ const Bed = () => {
     if (isRunning && therapyList[pickedTherapyIndex].remainTime >= 1) {
       const updatedTherapyList = therapyList.map((therapy, index) => {
         if (pickedTherapyIndex === index) {
+          const updatedRemainTime = therapy.remainTime - 1;
+          if (updatedRemainTime === 0) {
+            //TODO : 1초 남기고 종료됨. 조금 수정하기
+            setOpenDoneAlert(true);
+          }
           return {
             ...therapy,
-            remainTime: therapy.remainTime - 1,
-            isComplete: therapy.remainTime - 1 === 0, //시간이 다 흐르면 자동 완료
+            remainTime: updatedRemainTime,
+            isComplete: updatedRemainTime === 0, //시간이 다 흐르면 자동 완료
           };
         }
         return therapy;
@@ -41,7 +48,7 @@ const Bed = () => {
 
       intervalId = setInterval(() => {
         setTherapyList(updatedTherapyList);
-      }, 1000);
+      }, 100);
     } else if (nowRemainTime === 0) {
       setIsRunning(false);
       clearInterval(intervalId);
@@ -148,9 +155,26 @@ const Bed = () => {
     setPickedTherapyIndex(index);
   };
 
+  const autoStartNextTherapy = () => {
+    if (
+      pickedTherapyIndex === null ||
+      pickedTherapyIndex === therapyList.length - 1
+    ) {
+      return;
+    }
+    setOpenDoneAlert(false);
+    setPickedTherapyIndex(pickedTherapyIndex + 1);
+    handleStart();
+  };
+
+  const handleCloseAlert = () => {
+    setOpenDoneAlert(false);
+  };
+
   return (
     <Paper elevation={2} css={styles.container}>
       <BedInfo />
+
       <Timer
         isRunning={isRunning}
         time={
@@ -160,42 +184,52 @@ const Bed = () => {
         }
         handleTimerUpDown={handleTimerUpDown}
       />
-      <TherapyList
-        therapyList={therapyList}
-        handleTherapyComplete={handleTherapyComplete}
-        pickedTherapyIndex={pickedTherapyIndex}
-        pickTherapyIndex={pickTherapyIndex}
-      />
-      <TextField
-        id="outlined-multiline-static"
-        label="치료 부위 메모"
-        multiline
-        rows={3}
-      />
-      <div css={styles.timeModifyButtonContainer}>
-        <Button
-          variant="contained"
-          color={isRunning ? "inherit" : "primary"}
-          onClick={isRunning ? handlePause : handleStart}
-          disabled={
-            pickedTherapyIndex === null ||
-            therapyList[pickedTherapyIndex].remainTime <= 0
-          }
-          size="large"
-          css={{ flex: 1 }}
-        >
-          {isRunning ? "정지" : "시작"}
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={handleReset}
-          size="large"
-          css={{ flex: 1 }}
-          disabled={pickedTherapyIndex === null}
-        >
-          초기화
-        </Button>
+      <div css={styles.underTimerContainer}>
+        {openDoneAlert && (
+          <TherapyFinishAlert
+            pickedTherapyIndex={pickedTherapyIndex}
+            therapyList={therapyList}
+            autoStartNextTherapy={autoStartNextTherapy}
+            handleCloseAlert={handleCloseAlert}
+          />
+        )}
+        <TherapyList
+          therapyList={therapyList}
+          handleTherapyComplete={handleTherapyComplete}
+          pickedTherapyIndex={pickedTherapyIndex}
+          pickTherapyIndex={pickTherapyIndex}
+        />
+        <TextField
+          id="outlined-multiline-static"
+          label="치료 부위 메모"
+          multiline
+          rows={3}
+        />
+        <div css={styles.timeModifyButtonContainer}>
+          <Button
+            variant="contained"
+            color={isRunning ? "inherit" : "primary"}
+            onClick={isRunning ? handlePause : handleStart}
+            disabled={
+              pickedTherapyIndex === null ||
+              therapyList[pickedTherapyIndex].remainTime <= 0
+            }
+            size="large"
+            css={{ flex: 1 }}
+          >
+            {isRunning ? "정지" : "시작"}
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleReset}
+            size="large"
+            css={{ flex: 1 }}
+            disabled={pickedTherapyIndex === null}
+          >
+            초기화
+          </Button>
+        </div>
       </div>
     </Paper>
   );
@@ -209,6 +243,13 @@ const styles = createStyles({
     paddingBottom: 2,
     paddingInline: 2,
 
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  underTimerContainer: {
+    position: "relative",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     gap: 8,
