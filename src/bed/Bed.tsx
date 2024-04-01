@@ -12,9 +12,10 @@ import { enqueueSnackbar } from "notistack";
 
 interface Props {
   roomNum: number;
+  addDoneBedCount: (addCount: number) => void;
 }
 
-const Bed: FC<Props> = ({ roomNum }) => {
+const Bed: FC<Props> = ({ roomNum, addDoneBedCount }) => {
   const [bedName, setBedName] = useState<string>("침대");
 
   const [isRunning, setIsRunning] = useState(false); // 타이머가 작동 하는가
@@ -36,36 +37,34 @@ const Bed: FC<Props> = ({ roomNum }) => {
 
     const nowRemainTime = therapyList[pickedTherapyIndex].remainTime;
 
-    if (isRunning && therapyList[pickedTherapyIndex].remainTime >= 1) {
-      const updatedTherapyList = therapyList.map((therapy, index) => {
-        if (pickedTherapyIndex === index) {
-          const updatedRemainTime = therapy.remainTime - 1;
-          if (updatedRemainTime === 0) {
-            //TODO : 1초 남기고 종료됨. 조금 수정하기
-            setOpenDoneAlert(true);
-
-            enqueueSnackbar(
-              `치료실${roomNum} - 침대1: [${therapyList[pickedTherapyIndex].name}]이 끝났습니다.`,
-              {
-                anchorOrigin: { horizontal: "right", vertical: "bottom" },
-                variant: "success",
-                autoHideDuration: 10000,
-              }
-            );
-          }
-          return {
-            ...therapy,
-            remainTime: updatedRemainTime,
-            isComplete: updatedRemainTime === 0, //시간이 다 흐르면 자동 완료
-          };
-        }
-        return therapy;
-      });
-
+    if (isRunning && nowRemainTime >= 1) {
       intervalId = setInterval(() => {
+        const updatedTherapyList = therapyList.map((therapy, index) => {
+          if (pickedTherapyIndex === index) {
+            const updatedRemainTime = therapy.remainTime - 1;
+
+            return {
+              ...therapy,
+              remainTime: updatedRemainTime,
+              isComplete: updatedRemainTime === 0, //시간이 다 흐르면 자동 완료
+            };
+          }
+          return therapy;
+        });
         setTherapyList(updatedTherapyList);
-      }, 100);
-    } else if (nowRemainTime === 0) {
+      }, 10);
+    } else if (isRunning && nowRemainTime === 0) {
+      //TODO : 1초 남기고 종료됨. 조금 수정하기
+      setOpenDoneAlert(true);
+      addDoneBedCount(1);
+      enqueueSnackbar(
+        `치료실${roomNum + 1} - ${bedName}: [${therapyList[pickedTherapyIndex].name}]이(가) 끝났습니다.`,
+        {
+          anchorOrigin: { horizontal: "right", vertical: "bottom" },
+          variant: "success",
+          autoHideDuration: 10000,
+        }
+      );
       setIsRunning(false);
       clearInterval(intervalId);
     } else {
@@ -79,7 +78,14 @@ const Bed: FC<Props> = ({ roomNum }) => {
       }
       clearInterval(intervalId);
     };
-  }, [isRunning, pickedTherapyIndex, roomNum, therapyList]);
+  }, [
+    addDoneBedCount,
+    bedName,
+    isRunning,
+    pickedTherapyIndex,
+    roomNum,
+    therapyList,
+  ]);
 
   const handleStart = () => {
     if (pickedTherapyIndex === null) {
@@ -107,6 +113,7 @@ const Bed: FC<Props> = ({ roomNum }) => {
         return {
           ...therapy,
           remainTime: therapy.duration,
+          isComplete: false,
         };
       }
       return therapy;
@@ -181,9 +188,11 @@ const Bed: FC<Props> = ({ roomNum }) => {
     setOpenDoneAlert(false);
     setPickedTherapyIndex(pickedTherapyIndex + 1);
     handleStart();
+    addDoneBedCount(-1);
   };
 
   const handleCloseAlert = () => {
+    addDoneBedCount(-1);
     setOpenDoneAlert(false);
   };
 

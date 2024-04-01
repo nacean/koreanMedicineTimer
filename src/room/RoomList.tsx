@@ -1,22 +1,35 @@
 import { useState } from "react";
 
-import { Tabs, Tab, Box } from "@mui/material";
+import { Tabs, Box } from "@mui/material";
 import Room from "@src/room/Room";
+import RoomTab from "@src/room/RoomTab";
 
 const RoomList = () => {
-  const [nowRoomNum, setNowRoomNum] = useState<number>(0);
-
   const roomNumArray = [0, 1, 2, 3, 4, 5];
 
-  const a11yProps = (index: number) => {
-    return {
-      id: `room-tab-${index}`,
-      "aria-controls": `room-tabpanel-${index}`,
-    };
-  };
+  console.log("roomlist");
+
+  const [nowRoomNum, setNowRoomNum] = useState<number>(0);
+  const [roomDoneBedCountArray, setRoomDoneBedCountArray] = useState<number[]>(
+    roomNumArray.map(() => 0)
+  );
 
   const handleRoomChange = (_: React.SyntheticEvent, newValue: number) => {
     setNowRoomNum(newValue);
+  };
+
+  const handleChangeRoomDoneBedCount = (roomNum: number, addCount: number) => {
+    const updatedroomDoneBedCountArray = roomDoneBedCountArray.map(
+      (roomDoneBedCount, index) => {
+        if (roomNum === index) {
+          return roomDoneBedCount + addCount;
+        }
+
+        return roomDoneBedCount;
+      }
+    );
+
+    setRoomDoneBedCountArray(updatedroomDoneBedCountArray);
   };
 
   return (
@@ -29,12 +42,23 @@ const RoomList = () => {
           centered
         >
           {roomNumArray.map((roomNum) => (
-            <Tab label={`치료실${roomNum + 1}`} {...a11yProps(roomNum)} />
+            <RoomTab
+              roomNum={roomNum}
+              isAlert={roomDoneBedCountArray[roomNum] > 0}
+              key={"tab" + roomNum}
+            />
           ))}
         </Tabs>
       </Box>
       {roomNumArray.map((roomNum) => (
-        <Room nowRoomNum={nowRoomNum} thisRoomNum={roomNum} />
+        <Room
+          nowRoomNum={nowRoomNum}
+          thisRoomNum={roomNum}
+          handleChangeRoomDoneBedCount={(addCount: number) => {
+            handleChangeRoomDoneBedCount(roomNum, addCount);
+          }}
+          key={"room" + roomNum}
+        />
       ))}
     </div>
   );

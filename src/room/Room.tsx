@@ -5,10 +5,15 @@ import { FC } from "react";
 interface Props {
   nowRoomNum: number;
   thisRoomNum: number;
+  handleChangeRoomDoneBedCount: (addCount: number) => void;
 }
 
-const Room: FC<Props> = ({ nowRoomNum, thisRoomNum }) => {
-  const roomNumArray = [1, 2, 3, 4, 5, 6];
+const Room: FC<Props> = ({
+  nowRoomNum,
+  thisRoomNum,
+  handleChangeRoomDoneBedCount,
+}) => {
+  const bedNumArray = [1, 2, 3, 4, 5, 6];
 
   return (
     <div
@@ -18,8 +23,12 @@ const Room: FC<Props> = ({ nowRoomNum, thisRoomNum }) => {
       aria-labelledby={`room-tab-${thisRoomNum}`}
       css={styles.container}
     >
-      {roomNumArray.map((roomNum) => (
-        <Bed roomNum={roomNum} />
+      {bedNumArray.map((_, index) => (
+        <Bed
+          roomNum={thisRoomNum}
+          addDoneBedCount={handleChangeRoomDoneBedCount}
+          key={"room" + thisRoomNum + "bed" + index}
+        />
       ))}
     </div>
   );

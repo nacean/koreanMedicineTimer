@@ -68,26 +68,24 @@ const TherapyFinishAlert: FC<Props> = ({
             </div>
           </ListItemText>
         </ListItem>
-        {
-          <ListItem disablePadding>
-            <ListItemIcon>
-              <ArrowCircleRightIcon sx={styles.listIcon} />
-            </ListItemIcon>
-            <ListItemText>
-              <div css={styles.listTextContainer}>
-                <div>다음: </div>
-                {pickedTherapyIndex &&
-                therapyList.length - 1 > pickedTherapyIndex ? (
-                  <div css={styles.nextTherapyText}>
-                    {therapyList[pickedTherapyIndex + 1].name}
-                  </div>
-                ) : (
-                  <div css={{ color: "#bdbdbd" }}>없음</div>
-                )}
-              </div>
-            </ListItemText>
-          </ListItem>
-        }
+        <ListItem disablePadding>
+          <ListItemIcon>
+            <ArrowCircleRightIcon sx={styles.listIcon} />
+          </ListItemIcon>
+          <ListItemText>
+            <div css={styles.listTextContainer}>
+              <div>다음: </div>
+              {pickedTherapyIndex !== null &&
+              therapyList.length - 1 > pickedTherapyIndex ? (
+                <div css={styles.nextTherapyText}>
+                  {therapyList[pickedTherapyIndex + 1].name}
+                </div>
+              ) : (
+                <div css={{ color: "#bdbdbd" }}>없음</div>
+              )}
+            </div>
+          </ListItemText>
+        </ListItem>
       </List>
       <div css={styles.buttonContainer}>
         <Button
