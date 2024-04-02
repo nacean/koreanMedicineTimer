@@ -1,4 +1,5 @@
-import { Button, Paper, TextField } from "@mui/material";
+import { Button, IconButton, Paper, TextField } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect, FC } from "react";
 
 import BedInfo from "@src/bed/BedInfo";
@@ -8,7 +9,7 @@ import TherapyList from "@src/bed/therapy/TherapyList";
 import { getBasicTherapyList } from "@src/utils/therapyUtils";
 import TherapyType from "@src/types/TherapyType";
 import TherapyFinishAlert from "@src/bed/therapy/TherapyFinishAlert";
-import { enqueueSnackbar } from "notistack";
+import { closeSnackbar, enqueueSnackbar } from "notistack";
 
 interface Props {
   roomNum: number;
@@ -57,8 +58,21 @@ const Bed: FC<Props> = ({ roomNum, addDoneBedCount }) => {
       //TODO : 1초 남기고 종료됨. 조금 수정하기
       setOpenDoneAlert(true);
       addDoneBedCount(1);
-      enqueueSnackbar(
-        `치료실${roomNum + 1} - ${bedName}: [${therapyList[pickedTherapyIndex].name}]이(가) 끝났습니다.`,
+      const snackBarKey = enqueueSnackbar(
+        <div css={styles.snackBarContainer}>
+          <div>
+            {`치료실${roomNum + 1} - ${bedName}: [${[therapyList[pickedTherapyIndex].name]}]이(가) 끝났습니다.`}
+          </div>
+          <IconButton
+            onClick={() => {
+              closeSnackbar(snackBarKey);
+            }}
+            sx={styles.closeButton}
+            size="small"
+          >
+            <CloseIcon fontSize="small" sx={{ color: "#fff" }} />
+          </IconButton>
+        </div>,
         {
           anchorOrigin: { horizontal: "right", vertical: "bottom" },
           variant: "success",
@@ -295,6 +309,17 @@ const styles = createStyles({
     justifyContent: "center",
     alignItems: "center",
     gap: 12,
+  },
+  snackBarContainer: {
+    width: 340,
+    display: "flex",
+    alignItems: "center",
+  },
+  closeButton: {
+    marginLeft: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
