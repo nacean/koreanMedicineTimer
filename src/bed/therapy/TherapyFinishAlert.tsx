@@ -32,7 +32,7 @@ const TherapyFinishAlert: FC<Props> = ({
   const colorArray: ("success" | "error")[] = ["success", "error"];
 
   useEffect(() => {
-    let intervalId = 0;
+    let intervalId: NodeJS.Timeout | number = 0;
 
     intervalId = setInterval(() => {
       setColorIndex(colorIndex === 0 ? 1 : 0);

@@ -12,7 +12,7 @@ const RoomTab: FC<Props> = ({ roomNum, isAlert, ...props }) => {
   >(undefined);
 
   useEffect(() => {
-    let intervalId = 0;
+    let intervalId: NodeJS.Timeout | number = 0;
 
     if (isAlert) {
       intervalId = setInterval(() => {

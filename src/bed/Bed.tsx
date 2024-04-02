@@ -34,7 +34,7 @@ const Bed: FC<Props> = ({ roomNum, addDoneBedCount }) => {
       return;
     }
 
-    let intervalId = 0;
+    let intervalId: NodeJS.Timeout | number = 0;
 
     const nowRemainTime = therapyList[pickedTherapyIndex].remainTime;
 
