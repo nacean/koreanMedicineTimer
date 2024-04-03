@@ -17,6 +17,7 @@ function createWindow() {
       preload: join(__dirname, "preload.mjs"),
       nodeIntegration: true,
     },
+    icon: join(__dirname, "assets/icons/png/koreanMedicineBlackIcon.png"),
   });
 
   // and load the index.html of the app.

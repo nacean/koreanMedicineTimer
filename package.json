@@ -2,6 +2,7 @@
   "name": "koreanmedicinetimer",
   "private": true,
   "author": "jaeYoon",
+  "description": "korean Medicine Timer",
   "version": "0.0.0",
   "type": "module",
   "main": "electron/electron.js",
@@ -11,11 +12,15 @@
     "productName": "koreanmedicineTimer",
     "copyright": "Copyright © 2023 ${author}",
     "mac": {
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "icon": "./electron/assets/icons/mac/koreanMedicineBlackIcon.icns"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "icon": "./electron/assets/icons/win/koreanMedicineBlackIcon.ico"
     },
     "files": [
       "dist/**/*",
@@ -36,7 +41,7 @@
     "electron:dev": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"yarn electron\"",
     "electron:builder": "electron-builder",
     "build:for:electron": "tsc && cross-env ELECTRON=true vite build",
-    "app:build": "yarn build:for:electron && yarn electron:builder --win portable --x64"
+    "app:build": "yarn build:for:electron && yarn electron:builder"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
