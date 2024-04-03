@@ -23,10 +23,11 @@ const Room: FC<Props> = ({
       aria-labelledby={`room-tab-${thisRoomNum}`}
       css={styles.container}
     >
-      {bedNumArray.map((_, index) => (
+      {bedNumArray.map((bedNum, index) => (
         <Bed
           roomNum={thisRoomNum}
           addDoneBedCount={handleChangeRoomDoneBedCount}
+          bedNum={bedNum}
           key={"room" + thisRoomNum + "bed" + index}
         />
       ))}

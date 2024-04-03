@@ -12,12 +12,13 @@ import TherapyFinishAlert from "@src/bed/therapy/TherapyFinishAlert";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 
 interface Props {
+  bedNum: number;
   roomNum: number;
   addDoneBedCount: (addCount: number) => void;
 }
 
-const Bed: FC<Props> = ({ roomNum, addDoneBedCount }) => {
-  const [bedName, setBedName] = useState<string>("침대");
+const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
+  const [bedName, setBedName] = useState<string>(`침대${bedNum}`);
   const [patientInfo, setPatientInfo] = useState<string>("");
   const [cureMemo, setCureMemo] = useState<string>("");
 
@@ -62,7 +63,7 @@ const Bed: FC<Props> = ({ roomNum, addDoneBedCount }) => {
       const snackBarKey = enqueueSnackbar(
         <div css={styles.snackBarContainer}>
           <div>
-            {`치료실${roomNum + 1} - ${bedName}: [${[therapyList[pickedTherapyIndex].name]}]이(가) 끝났습니다.`}
+            {`[${bedName}]에서 [${[therapyList[pickedTherapyIndex].name]}]이(가) 끝났습니다.`}
           </div>
           <IconButton
             onClick={() => {
@@ -230,7 +231,7 @@ const Bed: FC<Props> = ({ roomNum, addDoneBedCount }) => {
   };
 
   const allReset = () => {
-    setBedName("");
+    setBedName(`침대${bedNum}`);
     setPatientInfo("");
     setCureMemo("");
     setIsRunning(false);
