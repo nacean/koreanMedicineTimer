@@ -4,7 +4,6 @@ import {
   Button,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -55,10 +54,8 @@ const TherapyFinishAlert: FC<Props> = ({
     >
       <AlertTitle>치료 완료 알림</AlertTitle>
       <List css={styles.list}>
-        <ListItem disablePadding>
-          <ListItemIcon>
-            <CheckCircleIcon sx={styles.listIcon} />
-          </ListItemIcon>
+        <ListItem disablePadding sx={styles.listItem}>
+          <CheckCircleIcon sx={styles.listIcon} />
           <ListItemText>
             <div css={styles.listTextContainer}>
               <div>완료: </div>
@@ -68,10 +65,8 @@ const TherapyFinishAlert: FC<Props> = ({
             </div>
           </ListItemText>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemIcon>
-            <ArrowCircleRightIcon sx={styles.listIcon} />
-          </ListItemIcon>
+        <ListItem disablePadding sx={styles.listItem}>
+          <ArrowCircleRightIcon sx={styles.listIcon} />
           <ListItemText>
             <div css={styles.listTextContainer}>
               <div>다음: </div>
@@ -127,6 +122,11 @@ const styles = createStyles({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  listItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: 1,
+  },
   list: {
     display: "flex",
     flexDirection: "column",
@@ -135,14 +135,14 @@ const styles = createStyles({
     paddingBlock: 24,
   },
   listIcon: {
-    fontSize: 40,
+    fontSize: 30,
     color: "#000",
   },
   listTextContainer: {
     display: "flex",
     alignItems: "center",
-    gap: 6,
-    fontSize: 30,
+    gap: 2,
+    fontSize: 26,
   },
   doneTherapyText: {
     color: "red",

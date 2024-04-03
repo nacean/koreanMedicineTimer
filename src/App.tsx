@@ -16,6 +16,8 @@ function App() {
 
 const styles = createStyles({
   container: {
+    width: "100%",
+    marginTop: 12,
     display: "flex",
     justifyContent: "center",
   },

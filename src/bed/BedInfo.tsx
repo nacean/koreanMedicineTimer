@@ -28,7 +28,7 @@ const styles = createStyles({
     width: "100%",
     display: "flex",
     alignItems: "center",
-    gap: 2,
+    gap: 4,
   },
 });
 export default BedInfo;

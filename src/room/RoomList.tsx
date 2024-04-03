@@ -31,7 +31,7 @@ const RoomList = () => {
   };
 
   return (
-    <div>
+    <div css={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={nowRoomNum}
@@ -48,16 +48,18 @@ const RoomList = () => {
           ))}
         </Tabs>
       </Box>
-      {roomNumArray.map((roomNum) => (
-        <Room
-          nowRoomNum={nowRoomNum}
-          thisRoomNum={roomNum}
-          handleChangeRoomDoneBedCount={(addCount: number) => {
-            handleChangeRoomDoneBedCount(roomNum, addCount);
-          }}
-          key={"room" + roomNum}
-        />
-      ))}
+      <div>
+        {roomNumArray.map((roomNum) => (
+          <Room
+            nowRoomNum={nowRoomNum}
+            thisRoomNum={roomNum}
+            handleChangeRoomDoneBedCount={(addCount: number) => {
+              handleChangeRoomDoneBedCount(roomNum, addCount);
+            }}
+            key={"room" + roomNum}
+          />
+        ))}
+      </div>
     </div>
   );
 };

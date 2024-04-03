@@ -11,6 +11,7 @@ import { FC } from "react";
 
 import TherapyType from "@src/types/TherapyType";
 import { getTherapyTime } from "@src/utils/timeUtils";
+import { createStyles } from "@src/utils/utils";
 
 interface Props {
   therapyList: TherapyType[];
@@ -38,12 +39,19 @@ const TherapyList: FC<Props> = ({
                 borderRight: "1px solid #9e9e9e",
                 borderBottom: "1px solid #9e9e9e",
               }}
+              sx={styles.headCell}
             >
               치료항목
             </TableCell>
-            <TableCell align="right">필요시간</TableCell>
-            <TableCell align="right">남은시간</TableCell>
-            <TableCell align="right">완료</TableCell>
+            <TableCell align="right" sx={styles.headCell}>
+              필요시간
+            </TableCell>
+            <TableCell align="right" sx={styles.headCell}>
+              남은시간
+            </TableCell>
+            <TableCell align="right" sx={styles.headCell}>
+              완료
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -87,6 +95,7 @@ const TherapyList: FC<Props> = ({
                   onChange={(event) => {
                     handleTherapyComplete(event, index);
                   }}
+                  size="small"
                 />
               </TableCell>
             </TableRow>
@@ -96,5 +105,12 @@ const TherapyList: FC<Props> = ({
     </TableContainer>
   );
 };
+
+const styles = createStyles({
+  headCell: {
+    fontSize: 11,
+    fontWeight: 700,
+  },
+});
 
 export default TherapyList;

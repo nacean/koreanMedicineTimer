@@ -94,7 +94,7 @@ const styles = createStyles({
     alignItems: "center",
   },
   clock: {
-    width: 180,
+    width: 152,
     height: 46,
     display: "flex",
     justifyContent: "center",

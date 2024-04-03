@@ -282,12 +282,11 @@ const Bed: FC<Props> = ({ roomNum, addDoneBedCount }) => {
 
 const styles = createStyles({
   container: {
-    width: 320,
-    height: 570,
+    width: 290,
+    height: 565,
     paddingTop: 4,
     paddingBottom: 2,
     paddingInline: 2,
-
     display: "flex",
     flexDirection: "column",
     gap: 8,

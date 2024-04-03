@@ -36,8 +36,7 @@ const Room: FC<Props> = ({
 
 const styles = createStyles({
   container: {
-    width: 1000,
-    padding: 24,
+    paddingBlock: 36,
     display: "flex",
     justifyContent: "center",
     flexWrap: "wrap",
