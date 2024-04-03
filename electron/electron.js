@@ -16,6 +16,7 @@ function createWindow() {
     webPreferences: {
       preload: join(__dirname, "preload.mjs"),
       nodeIntegration: true,
+      backgroundThrottling: false,
     },
     icon: join(__dirname, "assets/icons/png/koreanMedicineBlackIcon.png"),
   });
