@@ -53,9 +53,8 @@ const Bed: FC<Props> = ({ roomNum, addDoneBedCount }) => {
           return therapy;
         });
         setTherapyList(updatedTherapyList);
-      }, 10);
+      }, 1000);
     } else if (isRunning && nowRemainTime === 0) {
-      //TODO : 1초 남기고 종료됨. 조금 수정하기
       setOpenDoneAlert(true);
       addDoneBedCount(1);
       const snackBarKey = enqueueSnackbar(
