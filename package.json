@@ -1,15 +1,42 @@
 {
   "name": "koreanmedicinetimer",
   "private": true,
+  "author": "jaeYoon",
   "version": "0.0.0",
   "type": "module",
-  "main": "./public/main.ts",
+  "main": "electron/electron.js",
   "homepage": "./",
+  "build": {
+    "appId": "com.timer.koreanMedicine",
+    "productName": "koreanmedicineTimer",
+    "copyright": "Copyright © 2023 ${author}",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist_electron"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron": "wait-on tcp:5173 && cross-env IS_DEV=true electron .",
+    "electron:pack": "electron-builder --dir",
+    "electron:dev": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"yarn electron\"",
+    "electron:builder": "electron-builder",
+    "build:for:electron": "tsc && cross-env ELECTRON=true vite build",
+    "app:build": "yarn build:for:electron && yarn electron:builder --win portable --x64"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
