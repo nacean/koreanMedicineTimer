@@ -8,9 +8,18 @@ interface Props {
   handleBedName: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  patientInfo: string;
+  handlePatientInfo: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
-const BedInfo: FC<Props> = ({ bedName, handleBedName }) => {
+const BedInfo: FC<Props> = ({
+  bedName,
+  handleBedName,
+  patientInfo,
+  handlePatientInfo,
+}) => {
   return (
     <div css={styles.infoContainer}>
       <TextField
@@ -19,7 +28,12 @@ const BedInfo: FC<Props> = ({ bedName, handleBedName }) => {
         value={bedName}
         onChange={handleBedName}
       />
-      <TextField label="환자정보" size="small" />
+      <TextField
+        label="환자정보"
+        size="small"
+        value={patientInfo}
+        onChange={handlePatientInfo}
+      />
     </div>
   );
 };
