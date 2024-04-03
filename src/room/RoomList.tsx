@@ -5,7 +5,8 @@ import Room from "@src/room/Room";
 import RoomTab from "@src/room/RoomTab";
 
 const RoomList = () => {
-  const roomNumArray = [0, 1, 2, 3, 4, 5];
+  //const roomNumArray = [0, 1, 2, 3, 4, 5];
+  const roomNumArray = [0];
 
   const [nowRoomNum, setNowRoomNum] = useState<number>(0);
   const [roomDoneBedCountArray, setRoomDoneBedCountArray] = useState<number[]>(
