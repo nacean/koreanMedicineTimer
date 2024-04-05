@@ -39,7 +39,7 @@ const RoomTab: FC<Props> = ({ roomNum, isAlert, ...props }) => {
 
   return (
     <Tab
-      label={`치료실${roomNum + 1}`}
+      label={"치료실"}
       sx={{ background: tabBackgroundColor }}
       {...a11yProps(roomNum)}
       {...props}
