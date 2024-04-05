@@ -5,34 +5,34 @@ import { FC } from "react";
 
 interface Props {
   bedName: string;
-  handleBedName: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
   patientInfo: string;
   handlePatientInfo: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
 }
 
-const BedInfo: FC<Props> = ({
-  bedName,
-  handleBedName,
-  patientInfo,
-  handlePatientInfo,
-}) => {
+const BedInfo: FC<Props> = ({ bedName, patientInfo, handlePatientInfo }) => {
   return (
     <div css={styles.infoContainer}>
       <TextField
-        label="배드명"
         size="small"
         value={bedName}
-        onChange={handleBedName}
+        InputProps={{
+          sx: styles.bedNameContainer,
+          readOnly: true,
+        }}
+        sx={{ width: "50%" }}
       />
       <TextField
-        label="환자정보"
+        label="환자 정보"
         size="small"
         value={patientInfo}
         onChange={handlePatientInfo}
+        InputProps={{
+          sx: styles.patientInfoContainer,
+        }}
+        InputLabelProps={{ sx: { paddingTop: 0.4 } }}
+        sx={{ width: "50%" }}
       />
     </div>
   );
@@ -43,6 +43,16 @@ const styles = createStyles({
     display: "flex",
     alignItems: "center",
     gap: 4,
+  },
+  bedNameContainer: {
+    backgroundColor: "#ffff8d",
+    fontWeight: 700,
+    fontSize: 24,
+    height: 50,
+  },
+  patientInfoContainer: {
+    height: 50,
+    fontWeight: 600,
   },
 });
 export default BedInfo;

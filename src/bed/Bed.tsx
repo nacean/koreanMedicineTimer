@@ -18,7 +18,7 @@ interface Props {
 }
 
 const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
-  const [bedName, setBedName] = useState<string>(`침대${bedNum}`);
+  const bedName = `Bed${bedNum}`;
   const [patientInfo, setPatientInfo] = useState<string>("");
   const [cureMemo, setCureMemo] = useState<string>("");
 
@@ -212,12 +212,6 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
     setOpenDoneAlert(false);
   };
 
-  const handleBedName = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setBedName(e.target.value);
-  };
-
   const handlePatientInfo = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -231,7 +225,6 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
   };
 
   const allReset = () => {
-    setBedName(`침대${bedNum}`);
     setPatientInfo("");
     setCureMemo("");
     setIsRunning(false);
@@ -248,7 +241,6 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
       <Paper elevation={2} css={styles.paperContainer}>
         <BedInfo
           bedName={bedName}
-          handleBedName={handleBedName}
           patientInfo={patientInfo}
           handlePatientInfo={handlePatientInfo}
         />
@@ -324,7 +316,7 @@ const styles = createStyles({
   },
   paperContainer: {
     width: 290,
-    height: 565,
+    height: 570,
     paddingTop: 6,
     paddingBottom: 2,
     paddingInline: 8,
