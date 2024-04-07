@@ -39,7 +39,7 @@ const TherapyList: FC<Props> = ({
                 borderRight: "1px solid #9e9e9e",
                 borderBottom: "1px solid #9e9e9e",
               }}
-              sx={styles.headCell}
+              sx={styles.headCornerCell}
             >
               치료항목
             </TableCell>
@@ -72,23 +72,29 @@ const TherapyList: FC<Props> = ({
             >
               <TableCell
                 align="center"
-                css={{
-                  borderRight: "1px solid #9e9e9e",
-                  borderBottom:
-                    therapyList.length - 1 === index
-                      ? undefined
-                      : "1px solid #9e9e9e",
-                }}
+                css={[
+                  styles.bodyCell,
+                  {
+                    borderRight: "1px solid #9e9e9e",
+                    borderBottom:
+                      therapyList.length - 1 === index
+                        ? undefined
+                        : "1px solid #9e9e9e",
+                  },
+                ]}
               >
                 {row.name}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="right" css={styles.bodyCell}>
                 {getTherapyTime(row.duration)}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="right" css={styles.bodyCell}>
                 {getTherapyTime(row.remainTime)}
               </TableCell>
-              <TableCell align="right">
+              <TableCell
+                align="right"
+                css={(styles.bodyCell, { paddingTop: 13 })}
+              >
                 <Checkbox
                   css={{ padding: 0 }}
                   checked={row.isComplete}
@@ -107,8 +113,19 @@ const TherapyList: FC<Props> = ({
 };
 
 const styles = createStyles({
+  headCornerCell: {
+    fontSize: 14,
+    fontWeight: 700,
+    paddingLeft: 1.8,
+    paddingRight: 0,
+  },
   headCell: {
-    fontSize: 11,
+    fontSize: 14,
+    fontWeight: 700,
+    paddingLeft: 0,
+  },
+  bodyCell: {
+    fontSize: 24,
     fontWeight: 700,
   },
 });

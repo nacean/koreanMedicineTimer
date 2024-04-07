@@ -47,12 +47,13 @@ const styles = createStyles({
   bedNameContainer: {
     backgroundColor: "#ffff8d",
     fontWeight: 700,
-    fontSize: 24,
+    fontSize: 36,
     height: 50,
   },
   patientInfoContainer: {
     height: 50,
     fontWeight: 600,
+    fontSize: 20,
   },
 });
 export default BedInfo;

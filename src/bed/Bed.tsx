@@ -290,6 +290,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
             rows={3}
             value={cureMemo}
             onChange={handleCureMemo}
+            InputProps={{ sx: styles.memoInput }}
           />
           <div css={styles.timeModifyButtonContainer}>
             <Button
@@ -331,7 +332,7 @@ const styles = createStyles({
   },
   paperContainer: {
     width: 290,
-    height: 570,
+    height: 660,
     paddingTop: 6,
     paddingBottom: 2,
     paddingInline: 8,
@@ -346,8 +347,9 @@ const styles = createStyles({
     flexDirection: "column",
     gap: 8,
   },
-  memoContainer: {
-    marginBlock: 4,
+  memoInput: {
+    fontSize: 24,
+    fontWeight: 700,
   },
   timeModifyButtonContainer: {
     marginTop: "auto",

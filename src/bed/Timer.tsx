@@ -100,10 +100,12 @@ const styles = createStyles({
     justifyContent: "center",
     alignItems: "center",
     border: "1px solid black",
-    paddingBlock: 8,
+    paddingTop: 6,
+    paddingBottom: 10,
     paddingInline: 10,
     borderRadius: 4,
-    fontSize: 44,
+    fontSize: 58,
+    fontWeight: 600,
   },
   clockButtonContainer: {
     height: "100%",
@@ -127,6 +129,7 @@ const styles = createStyles({
     border: "1px solid black",
     borderRadius: 4,
     fontSize: 22,
+    fontWeight: 700,
   },
 });
 
