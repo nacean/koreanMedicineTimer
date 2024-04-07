@@ -265,11 +265,11 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
   };
 
   return (
-    <div css={styles.container}>
+    <Paper elevation={4} css={styles.container}>
       <Button color="warning" onClick={allReset}>
         전체 초기화
       </Button>
-      <Paper elevation={2} css={styles.paperContainer}>
+      <div css={styles.paperContainer}>
         <BedInfo
           bedName={bedName}
           patientInfo={patientInfo}
@@ -335,8 +335,8 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
             </Button>
           </div>
         </div>
-      </Paper>
-    </div>
+      </div>
+    </Paper>
   );
 };
 
