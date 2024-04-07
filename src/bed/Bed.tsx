@@ -61,7 +61,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
           return therapy;
         });
         setTherapyList(updatedTherapyList);
-      }, 10);
+      }, 1000);
     } else if (isRunning && nowRemainTime === 0) {
       setOpenDoneAlert(true);
       addDoneBedCount(1);
