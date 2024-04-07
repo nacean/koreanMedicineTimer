@@ -10,6 +10,7 @@ import { getBasicTherapyList } from "@src/utils/therapyUtils";
 import TherapyType from "@src/types/TherapyType";
 import TherapyFinishAlert from "@src/bed/therapy/TherapyFinishAlert";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
+import noticeSoundFile from "@src/assets/sound/notice.mp3";
 
 interface Props {
   bedNum: number;
@@ -33,6 +34,8 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
   );
 
   useEffect(() => {
+    const noticeSound = new Audio(noticeSoundFile);
+
     if (pickedTherapyIndex === null) {
       return;
     }
@@ -81,6 +84,18 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
           autoHideDuration: 10000,
         }
       );
+      const noticeIcon =
+        "https://www.logoyogo.com/web/wp-content/uploads/edd/2023/01/logoyogo-1-48.jpg";
+      if (!document.hasFocus()) {
+        new Notification(`[${bedName}] 치료 완료 알림`, {
+          body: `[${bedName}]에서 [${[therapyList[pickedTherapyIndex].name]}]이(가) 끝났습니다.`,
+          icon: noticeIcon,
+          renotify: true,
+          silent: true,
+          tag: `치료 완료 알림`,
+        });
+      }
+      noticeSound.play();
       setIsRunning(false);
       clearInterval(intervalId);
     } else {
