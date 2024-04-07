@@ -31,8 +31,9 @@ function createWindow() {
   // Open the DevTools.
   if (isDev) {
     mainWindow.webContents.openDevTools(process.execPath);
-    app.setAppUserModelId("jaiHunTimer");
   }
+  // set app Id for notification
+  app.setAppUserModelId("koreanMedicineTimer");
 }
 
 // This method will be called when Electron has finished
@@ -41,6 +42,7 @@ function createWindow() {
 app.whenReady().then(() => {
   console.log(__dirname);
   createWindow();
+  app.setName("koreanMeidicneTime");
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
