@@ -210,6 +210,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
         if (index === handleIndex) {
           return {
             ...therapy,
+            remainTime: isRunning ? therapy.remainTime : needTime,
             duration: needTime,
           };
         } else {
