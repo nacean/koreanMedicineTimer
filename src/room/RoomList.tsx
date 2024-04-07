@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-import { Tabs, Box } from "@mui/material";
+import { Tabs, Box, Button } from "@mui/material";
 import Room from "@src/room/Room";
 import RoomTab from "@src/room/RoomTab";
+import { createStyles } from "@src/utils/utils";
 
 const RoomList = () => {
   //const roomNumArray = [0, 1, 2, 3, 4, 5];
@@ -12,6 +13,8 @@ const RoomList = () => {
   const [roomDoneBedCountArray, setRoomDoneBedCountArray] = useState<number[]>(
     roomNumArray.map(() => 0)
   );
+
+  const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
 
   const handleRoomChange = (_: React.SyntheticEvent, newValue: number) => {
     setNowRoomNum(newValue);
@@ -31,8 +34,19 @@ const RoomList = () => {
     setRoomDoneBedCountArray(updatedroomDoneBedCountArray);
   };
 
+  const handleChangeSoundOn = () => {
+    setIsSoundOn(!isSoundOn);
+  };
+
   return (
-    <div css={{ width: "100%" }}>
+    <div css={styles.container}>
+      <Button
+        size="large"
+        variant="contained"
+        color={isSoundOn ? "success" : "warning"}
+        sx={styles.notificationSoundChangeButton}
+        onClick={handleChangeSoundOn}
+      >{`알림 소리 ${isSoundOn ? "켜짐" : "꺼짐"}`}</Button>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={nowRoomNum}
@@ -58,10 +72,24 @@ const RoomList = () => {
               handleChangeRoomDoneBedCount(roomNum, addCount);
             }}
             key={"room" + roomNum}
+            isSoundOn={isSoundOn}
           />
         ))}
       </div>
     </div>
   );
 };
+
+const styles = createStyles({
+  container: {
+    width: "100%",
+    position: "relative",
+  },
+  notificationSoundChangeButton: {
+    position: "absolute",
+    right: 12,
+    zIndex: 1,
+  },
+});
+
 export default RoomList;

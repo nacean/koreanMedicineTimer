@@ -6,12 +6,14 @@ interface Props {
   nowRoomNum: number;
   thisRoomNum: number;
   handleChangeRoomDoneBedCount: (addCount: number) => void;
+  isSoundOn: boolean;
 }
 
 const Room: FC<Props> = ({
   nowRoomNum,
   thisRoomNum,
   handleChangeRoomDoneBedCount,
+  isSoundOn,
 }) => {
   const bedNumArray = [1, 2, 3, 4, 5, 6];
 
@@ -29,6 +31,7 @@ const Room: FC<Props> = ({
           addDoneBedCount={handleChangeRoomDoneBedCount}
           bedNum={bedNum}
           key={"room" + thisRoomNum + "bed" + index}
+          isSoundOn={isSoundOn}
         />
       ))}
     </div>

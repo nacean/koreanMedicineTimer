@@ -17,9 +17,10 @@ interface Props {
   bedNum: number;
   roomNum: number;
   addDoneBedCount: (addCount: number) => void;
+  isSoundOn: boolean;
 }
 
-const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
+const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
   const bedName = `Bed${bedNum}`;
   const [patientInfo, setPatientInfo] = useState<string>("");
   const [cureMemo, setCureMemo] = useState<string>("");
@@ -93,7 +94,9 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
           tag: `치료 완료 알림`,
         });
       }
-      noticeSound.play();
+      if (isSoundOn) {
+        noticeSound.play();
+      }
       setIsRunning(false);
       clearInterval(intervalId);
     } else {
