@@ -266,7 +266,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
 
   return (
     <Paper elevation={4} css={styles.container}>
-      <Button color="warning" onClick={allReset}>
+      <Button size="large" color="warning" onClick={allReset}>
         전체 초기화
       </Button>
       <div css={styles.paperContainer}>
