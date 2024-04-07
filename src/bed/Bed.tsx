@@ -186,8 +186,23 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
     setTherapyList(updatedTherapyList);
   };
 
-  const handleTherapyComplete = (
-    event: React.ChangeEvent<HTMLInputElement>,
+  const handleTherapyComplete = (isComplete: boolean, handleIndex: number) => {
+    setTherapyList(
+      therapyList.map((therapy, index) => {
+        if (index === handleIndex) {
+          return {
+            ...therapy,
+            isComplete: isComplete,
+          };
+        } else {
+          return therapy;
+        }
+      })
+    );
+  };
+
+  const handleChangeTherapyNeedTime = (
+    needTime: number,
     handleIndex: number
   ) => {
     setTherapyList(
@@ -195,7 +210,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
         if (index === handleIndex) {
           return {
             ...therapy,
-            isComplete: event.target.checked,
+            duration: needTime,
           };
         } else {
           return therapy;
@@ -282,6 +297,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount }) => {
             handleTherapyComplete={handleTherapyComplete}
             pickedTherapyIndex={pickedTherapyIndex}
             pickTherapyIndex={pickTherapyIndex}
+            handleChangeTherapyNeedTime={handleChangeTherapyNeedTime}
           />
           <TextField
             id="outlined-multiline-static"
