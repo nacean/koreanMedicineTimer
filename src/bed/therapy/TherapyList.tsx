@@ -118,7 +118,7 @@ const TherapyList: FC<Props> = ({
                       index
                     );
                   }}
-                  value={row.duration / 60}
+                  value={(row.duration / 60).toString()}
                 />
               </TableCell>
               <TableCell align="right" css={styles.bodyCell}>
