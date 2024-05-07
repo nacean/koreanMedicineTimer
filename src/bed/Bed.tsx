@@ -48,24 +48,29 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
     null
   );
 
-  const setAllBedInfos = useCallback(() => {
-    const allBedInfos = {
-      patientInfo,
-      cureMemo,
-      therapyList,
-      pickedTherapyIndex,
-    };
+  const setBedInfosToDB = useCallback(
+    (needReset?: boolean) => {
+      const allBedInfos = needReset
+        ? undefined
+        : {
+            patientInfo,
+            cureMemo,
+            therapyList,
+            pickedTherapyIndex,
+          };
 
-    const db = new LowSync<nowBedInfo>(new LocalStorage("db.json"), {});
+      const db = new LowSync<nowBedInfo>(new LocalStorage("db.json"), {});
 
-    db.read();
-    const oldData = db.data;
-    console.log(oldData);
-    db.data = { ...oldData, [`bed${bedNum}`]: allBedInfos };
-    db.write();
-  }, [bedNum, cureMemo, patientInfo, pickedTherapyIndex, therapyList]);
+      db.read();
+      const oldData = db.data;
+      console.log(oldData);
+      db.data = { ...oldData, [`bed${bedNum}`]: allBedInfos };
+      db.write();
+    },
+    [bedNum, cureMemo, patientInfo, pickedTherapyIndex, therapyList]
+  );
 
-  const getAllBedInfos = useCallback(() => {
+  const getAllBedInfosFromDB = useCallback(() => {
     const db = new LowSync<nowBedInfo>(new LocalStorage("db.json"), {});
     db.read();
 
@@ -77,7 +82,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
   }, []);
 
   useEffect(() => {
-    const remainData = getAllBedInfos()[`bed${bedNum}`];
+    const remainData = getAllBedInfosFromDB()[`bed${bedNum}`];
 
     if (remainData?.cureMemo) {
       setCureMemo(remainData.cureMemo);
@@ -118,7 +123,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
           }
           return therapy;
         });
-        setAllBedInfos();
+        setBedInfosToDB();
         setTherapyList(updatedTherapyList);
       }, 1000);
     } else if (isRunning && nowRemainTime === 0) {
@@ -176,7 +181,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
     isSoundOn,
     pickedTherapyIndex,
     roomNum,
-    setAllBedInfos,
+    setBedInfosToDB,
     therapyList,
   ]);
 
@@ -185,7 +190,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
       return;
     }
 
-    setAllBedInfos();
+    setBedInfosToDB();
     setIsRunning(true);
   };
 
@@ -194,7 +199,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
       return;
     }
 
-    setAllBedInfos();
+    setBedInfosToDB();
     setIsRunning(false);
   };
 
@@ -214,7 +219,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
       return therapy;
     });
 
-    setAllBedInfos();
+    setBedInfosToDB();
     setTherapyList(updatedTherapyList);
   };
 
@@ -327,11 +332,12 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
     setOpenDoneAlert(false);
     setTherapyList(getBasicTherapyList());
     setPickedTherapyIndex(null);
+    setBedInfosToDB(true);
   };
 
   return (
     <Paper elevation={4} css={styles.container}>
-      <Button onClick={getAllBedInfos}>testget</Button>
+      <Button onClick={getAllBedInfosFromDB}>testget</Button>
       <Button size="large" color="warning" onClick={allReset}>
         전체 초기화
       </Button>
