@@ -1,6 +1,6 @@
 import { Button, IconButton, Paper, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC, useCallback } from "react";
 
 import BedInfo from "@src/bed/BedInfo";
 import { createStyles } from "@src/utils/utils";
@@ -12,12 +12,25 @@ import TherapyFinishAlert from "@src/bed/therapy/TherapyFinishAlert";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import noticeSoundFile from "@src/assets/sound/notice.mp3";
 import noticeIcon from "@electron/assets/icons/png/koreanMedicineBlackIcon.png";
+import { LowSync } from "lowdb";
+import { LocalStorage } from "lowdb/browser";
 
 interface Props {
   bedNum: number;
   roomNum: number;
   addDoneBedCount: (addCount: number) => void;
   isSoundOn: boolean;
+}
+
+interface BedAllInfos {
+  patientInfo: string;
+  cureMemo: string;
+  therapyList: TherapyType[];
+  pickedTherapyIndex: number | null;
+}
+
+interface nowBedInfo {
+  [key: string]: BedAllInfos | undefined;
 }
 
 const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
@@ -34,6 +47,51 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
   const [pickedTherapyIndex, setPickedTherapyIndex] = useState<number | null>(
     null
   );
+
+  const setAllBedInfos = useCallback(() => {
+    const allBedInfos = {
+      patientInfo,
+      cureMemo,
+      therapyList,
+      pickedTherapyIndex,
+    };
+
+    const db = new LowSync<nowBedInfo>(new LocalStorage("db.json"), {});
+
+    db.read();
+    const oldData = db.data;
+    console.log(oldData);
+    db.data = { ...oldData, [`bed${bedNum}`]: allBedInfos };
+    db.write();
+  }, [bedNum, cureMemo, patientInfo, pickedTherapyIndex, therapyList]);
+
+  const getAllBedInfos = useCallback(() => {
+    const db = new LowSync<nowBedInfo>(new LocalStorage("db.json"), {});
+    db.read();
+
+    const data = db.data;
+
+    console.log(data);
+
+    return data;
+  }, []);
+
+  useEffect(() => {
+    const remainData = getAllBedInfos()[`bed${bedNum}`];
+
+    if (remainData?.cureMemo) {
+      setCureMemo(remainData.cureMemo);
+    }
+    if (remainData?.patientInfo) {
+      setPatientInfo(remainData.patientInfo);
+    }
+    if (remainData?.pickedTherapyIndex) {
+      setPickedTherapyIndex(remainData.pickedTherapyIndex);
+    }
+    if (remainData?.therapyList) {
+      setTherapyList(remainData.therapyList);
+    }
+  }, []);
 
   useEffect(() => {
     const noticeSound = new Audio(noticeSoundFile);
@@ -60,6 +118,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
           }
           return therapy;
         });
+        setAllBedInfos();
         setTherapyList(updatedTherapyList);
       }, 1000);
     } else if (isRunning && nowRemainTime === 0) {
@@ -114,8 +173,10 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
     addDoneBedCount,
     bedName,
     isRunning,
+    isSoundOn,
     pickedTherapyIndex,
     roomNum,
+    setAllBedInfos,
     therapyList,
   ]);
 
@@ -124,6 +185,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
       return;
     }
 
+    setAllBedInfos();
     setIsRunning(true);
   };
 
@@ -132,6 +194,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
       return;
     }
 
+    setAllBedInfos();
     setIsRunning(false);
   };
 
@@ -151,6 +214,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
       return therapy;
     });
 
+    setAllBedInfos();
     setTherapyList(updatedTherapyList);
   };
 
@@ -267,6 +331,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
 
   return (
     <Paper elevation={4} css={styles.container}>
+      <Button onClick={getAllBedInfos}>testget</Button>
       <Button size="large" color="warning" onClick={allReset}>
         전체 초기화
       </Button>
