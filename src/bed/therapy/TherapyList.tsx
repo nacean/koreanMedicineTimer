@@ -20,6 +20,7 @@ interface Props {
   pickedTherapyIndex: number | null;
   pickTherapyIndex: (pickIndex: number) => void;
   handleChangeTherapyNeedTime: (needTime: number, handleIndex: number) => void;
+  handleChangeTherapyName: (name: string, handleIndex: number) => void;
 }
 
 const TherapyList: FC<Props> = ({
@@ -28,6 +29,7 @@ const TherapyList: FC<Props> = ({
   pickedTherapyIndex,
   pickTherapyIndex,
   handleChangeTherapyNeedTime,
+  handleChangeTherapyName,
 }) => {
   return (
     <TableContainer css={{ border: "1px solid #9e9e9e" }}>
@@ -61,7 +63,7 @@ const TherapyList: FC<Props> = ({
               onClick={() => {
                 pickTherapyIndex(index);
               }}
-              key={row.name}
+              key={"therapyList" + index}
               style={{
                 outline:
                   index === pickedTherapyIndex
@@ -80,10 +82,26 @@ const TherapyList: FC<Props> = ({
                       therapyList.length - 1 === index
                         ? undefined
                         : "1px solid #9e9e9e",
+                    paddingInline: index === therapyList.length - 1 ? 0 : 10,
+                    paddingBlock: 0,
                   },
                 ]}
               >
-                {row.name}
+                {index === therapyList.length - 1 ? (
+                  <TextField
+                    sx={{ padding: 0 }}
+                    inputProps={{ style: styles.lastTherapyName }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    onChange={(e) => {
+                      handleChangeTherapyName(e.target.value, index);
+                    }}
+                    value={row.name}
+                  />
+                ) : (
+                  row.name
+                )}
               </TableCell>
               <TableCell align="right" css={styles.bodyCell}>
                 <TextField
@@ -147,6 +165,16 @@ const styles = createStyles({
     fontSize: 20,
     fontWeight: 700,
     textAlign: "end",
+  },
+  lastTherapyName: {
+    boxSizing: "border-box",
+    padding: 0,
+    margin: 0,
+    width: 81,
+    height: 60,
+    fontSize: 24,
+    fontWeight: 700,
+    textAlign: "center",
   },
   removeNumberArrow: {
     "input::-webkit-outer-spin-button, input::-webkit-inner-spin-button": {

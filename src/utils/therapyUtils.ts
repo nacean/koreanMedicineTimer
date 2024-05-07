@@ -26,5 +26,11 @@ export const getBasicTherapyList = (): TherapyType[] => {
       remainTime: 900,
       isComplete: false,
     },
+    {
+      name: "",
+      duration: 0,
+      remainTime: 0,
+      isComplete: false,
+    },
   ];
 };

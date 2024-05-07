@@ -63,7 +63,6 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
 
       db.read();
       const oldData = db.data;
-      console.log(oldData);
       db.data = { ...oldData, [`bed${bedNum}`]: allBedInfos };
       db.write();
     },
@@ -75,8 +74,6 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
     db.read();
 
     const data = db.data;
-
-    console.log(data);
 
     return data;
   }, []);
@@ -290,6 +287,21 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
     );
   };
 
+  const handleChangeTherapyName = (name: string, handleIndex: number) => {
+    setTherapyList(
+      therapyList.map((therapy, index) => {
+        if (index === handleIndex) {
+          return {
+            ...therapy,
+            name,
+          };
+        } else {
+          return therapy;
+        }
+      })
+    );
+  };
+
   const pickTherapyIndex = (index: number) => {
     setIsRunning(false);
     setPickedTherapyIndex(index);
@@ -337,7 +349,6 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
 
   return (
     <Paper elevation={4} css={styles.container}>
-      <Button onClick={getAllBedInfosFromDB}>testget</Button>
       <Button size="large" color="warning" onClick={allReset}>
         전체 초기화
       </Button>
@@ -371,6 +382,7 @@ const Bed: FC<Props> = ({ bedNum, roomNum, addDoneBedCount, isSoundOn }) => {
             pickedTherapyIndex={pickedTherapyIndex}
             pickTherapyIndex={pickTherapyIndex}
             handleChangeTherapyNeedTime={handleChangeTherapyNeedTime}
+            handleChangeTherapyName={handleChangeTherapyName}
           />
           <TextField
             id="outlined-multiline-static"
@@ -421,7 +433,7 @@ const styles = createStyles({
   },
   paperContainer: {
     width: 290,
-    height: 660,
+    height: 730,
     paddingTop: 6,
     paddingBottom: 2,
     paddingInline: 8,
