@@ -3,7 +3,7 @@
   "private": true,
   "author": "jaeYoon",
   "description": "korean Medicine Timer",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "type": "module",
   "main": "electron/electron.js",
   "homepage": "./",
