@@ -36,7 +36,7 @@ function App() {
 const styles = createStyles({
   container: {
     width: "100%",
-    marginTop: 12,
+    height: "100%",
     display: "flex",
     justifyContent: "center",
     fontFamily: "AppleSDGothicNeoM",

@@ -47,7 +47,13 @@ const RoomList = () => {
         sx={styles.notificationSoundChangeButton}
         onClick={handleChangeSoundOn}
       >{`알림 소리 ${isSoundOn ? "켜짐" : "꺼짐"}`}</Button>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+          backgroundColor: "#D7D0C4",
+        }}
+      >
         <Tabs
           value={nowRoomNum}
           onChange={handleRoomChange}
@@ -63,7 +69,11 @@ const RoomList = () => {
           ))}
         </Tabs>
       </Box>
-      <div>
+      <div
+        css={{
+          paddingBottom: 90,
+        }}
+      >
         {roomNumArray.map((roomNum) => (
           <Room
             nowRoomNum={nowRoomNum}
@@ -84,9 +94,11 @@ const styles = createStyles({
   container: {
     width: "100%",
     position: "relative",
+    backgroundColor: "#fcfcfc",
   },
   notificationSoundChangeButton: {
     position: "absolute",
+    top: 3,
     right: 12,
     zIndex: 1,
   },
