@@ -148,7 +148,7 @@ const styles = createStyles({
   headCornerCell: {
     fontSize: 14,
     fontWeight: 700,
-    paddingLeft: 1.8,
+    paddingLeft: 2.5,
     paddingRight: 0,
   },
   headCell: {

@@ -47,7 +47,9 @@ const styles = createStyles({
   bedNameContainer: {
     backgroundColor: "#ffff8d",
     fontWeight: 700,
-    fontSize: 36,
+    fontSize: 44,
+    paddingTop: 0.8,
+    width: "100%",
     height: 50,
   },
   patientInfoContainer: {
